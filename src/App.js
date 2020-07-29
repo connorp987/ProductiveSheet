@@ -1,26 +1,76 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { Input,  Col, Row, Select,   Typography, Divider } from 'antd';
+import { AppstoreAddOutlined } from '@ant-design/icons'
+import { Priorities } from './Types/Priorities'
+import { Date } from './Types/Date'
+import { TaskDump } from './Types/TaskDump'
 
-function App() {
+
+import 'antd/dist/antd.css';
+import './css/App.css';
+
+const { Option } = Select;
+const { Text } = Typography;
+document.body.style = 'background: #dfe1e6;';
+
+
+export default function App() {
+
+  const [addNewBox, setAddNewBox] = useState(false)
+  const [testComp, setTestComp] = useState([<Divider key={11111111} />])
+
+
+  function flip() {
+    setAddNewBox(!addNewBox)
+  }
+
+  function test(target) {
+    if (target === 'Priorities') {
+      setTestComp(testComp.concat(<Priorities />))
+      flip()
+    } else if(target === 'Date') {
+      setTestComp(testComp.concat(<Date />))
+      flip()
+    } else if (target === 'TaskDump') {
+      setTestComp(testComp.concat(<TaskDump />))
+      flip()
+    }
+  }
+
+  let icon = ((addNewBox) ? (
+    <Select onSelect={test} placeholder="Select new" style={{ width: 120 }} allowClear>
+      <Option value="Priorities">Priorities</Option>
+      <Option value="Date">Date</Option>
+      <Option value="TaskDump">TaskDump</Option>
+    </Select>
+  ) : (<AppstoreAddOutlined onClick={flip} style={{ fontSize: '55px' }} />))
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+      <div style={{ width: '65%', margin: 'auto' }}>
+        <Text style={{ float: 'left', paddingTop: '2px' }} strong>Date: </Text>
+        <Input style={{ float: 'left', width: '20%' }} placeholder="Enter a date" bordered={false} />
+      </div>
+
+
+      <Row style={{ width: '70%', marginLeft: 'auto', marginRight: 'auto', paddingTop: '15px' }}>
+        <Col span={12}>
+          <div style={{ width: '80%', margin: 'auto' }}>
+            <Priorities />
+            <TaskDump />
+
+            {testComp}
+            {icon}
+          </div>
+        </Col>
+        <Col span={12}>
+          <Date />
+        </Col>
+      </Row>
+
+
+
     </div>
   );
 }
-
-export default App;
